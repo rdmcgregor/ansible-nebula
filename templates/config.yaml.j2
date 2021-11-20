@@ -118,34 +118,33 @@ firewall:
 
   outbound:
     # Allow all outbound traffic from this node
-{% for rule in outbound %}
+    {% for rule in outbound -%}
     - port: "{{ rule.port }}"
       proto: "{{ rule.proto }}"
       {% if rule.host is defined %}host: "{{ rule.host }}"
       {% elif rule.group is defined %}group: "{{ rule.group }}"
       {% elif rule.groups is defined %}groups:
-      {% for group in rule.groups %}
-        - {{ group }}
-      {% endfor %}
+    {% for group in rule.groups %}
+    - {{ group }}
+    {%- endfor %}
       {% elif rule.cidr is defined %}cidr: {{ rule.cidr }}
       {% else %}
       host: any
-      {% endif %}
+      {%- endif %}
 {% endfor %}
 
-
   inbound:
-{% for rule in inbound %}
+    {% for rule in inbound -%}
     - port: "{{ rule.port }}"
       proto: "{{ rule.proto }}"
       {% if rule.host is defined %}host: "{{ rule.host }}"
       {% elif rule.group is defined %}group: "{{ rule.group }}"
       {% elif rule.groups is defined %}groups:
-      {% for group in rule.groups %}
-        - {{ group }}
-      {% endfor %}
+    {% for group in rule.groups %}
+    - {{ group }}
+    {%- endfor %}
       {% elif rule.cidr is defined %}cidr: {{ rule.cidr }}
       {% else %}
       host: any
-      {% endif %}
+      {%- endif %}
 {% endfor %}
